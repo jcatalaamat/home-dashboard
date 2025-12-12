@@ -5,6 +5,7 @@ import { useApp } from '@/context/AppContext';
 import GoalCard from '@/components/goals/GoalCard';
 import AddGoalForm from '@/components/goals/AddGoalForm';
 import { Quarter, GoalStatus } from '@/types';
+import AreaSelector from '@/components/ui/AreaSelector';
 
 type FilterTab = 'active' | 'all' | 'achieved';
 
@@ -29,6 +30,7 @@ export default function GoalsPage() {
   const [activeTab, setActiveTab] = useState<FilterTab>('active');
   const [selectedQuarter, setSelectedQuarter] = useState<Quarter | 'all'>(currentQuarter());
   const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
 
   const activeGoals = getActiveGoals();
   const ignoredGoals = getIgnoredGoals();
@@ -55,6 +57,11 @@ export default function GoalsPage() {
       filtered = filtered.filter(
         (g) => g.quarter === selectedQuarter && g.year === selectedYear
       );
+    }
+
+    // Filter by area
+    if (selectedAreaId) {
+      filtered = filtered.filter((g) => g.areaId === selectedAreaId);
     }
 
     return filtered;
@@ -128,7 +135,7 @@ export default function GoalsPage() {
           ))}
         </div>
 
-        {/* Quarter/Year Filter */}
+        {/* Quarter/Year/Area Filter */}
         <div className="flex gap-2">
           <select
             value={selectedQuarter}
@@ -149,6 +156,12 @@ export default function GoalsPage() {
             <option value={currentYear + 1}>{currentYear + 1}</option>
             <option value={currentYear - 1}>{currentYear - 1}</option>
           </select>
+          <AreaSelector
+            value={selectedAreaId}
+            onChange={setSelectedAreaId}
+            className="px-3 py-2 bg-white dark:bg-gray-800"
+            noneLabel="All Areas"
+          />
         </div>
       </div>
 

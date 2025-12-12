@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { Note, NoteCategory } from '@/types';
 import { PlusIcon, PencilIcon, TrashBinIcon, CloseIcon } from '@/icons';
+import AreaSelector from '@/components/ui/AreaSelector';
 
 type FilterTab = 'all' | NoteCategory;
 
@@ -40,6 +41,7 @@ export default function VaultPage() {
   const [formContent, setFormContent] = useState('');
   const [formCategory, setFormCategory] = useState<NoteCategory>('ideas');
   const [formTags, setFormTags] = useState('');
+  const [formAreaId, setFormAreaId] = useState<string | null>(null);
 
   const getFilteredNotes = () => {
     let filtered = notes;
@@ -71,6 +73,7 @@ export default function VaultPage() {
     setFormContent('');
     setFormCategory(activeTab !== 'all' ? activeTab : 'ideas');
     setFormTags('');
+    setFormAreaId(null);
   };
 
   const handleEditNote = (note: Note) => {
@@ -79,6 +82,7 @@ export default function VaultPage() {
     setFormContent(note.content);
     setFormCategory(note.category);
     setFormTags(note.tags.join(', '));
+    setFormAreaId(note.areaId || null);
   };
 
   const handleSaveNote = () => {
@@ -96,6 +100,7 @@ export default function VaultPage() {
         content: formContent.trim(),
         category: formCategory,
         tags,
+        areaId: formAreaId,
       });
       setEditingNote(null);
     } else {
@@ -106,7 +111,7 @@ export default function VaultPage() {
         category: formCategory,
         tags,
         projectId: null,
-        areaId: null,
+        areaId: formAreaId,
       });
       setIsCreatingNote(false);
     }
@@ -116,6 +121,7 @@ export default function VaultPage() {
     setFormContent('');
     setFormCategory('ideas');
     setFormTags('');
+    setFormAreaId(null);
   };
 
   const handleCancelEdit = () => {
@@ -125,6 +131,7 @@ export default function VaultPage() {
     setFormContent('');
     setFormCategory('ideas');
     setFormTags('');
+    setFormAreaId(null);
   };
 
   const handleDeleteNote = (id: string) => {
@@ -223,8 +230,8 @@ export default function VaultPage() {
               className="w-full px-4 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-transparent dark:text-white focus:outline-none focus:border-brand-500"
             />
 
-            {/* Category & Tags Row */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* Category, Area & Tags Row */}
+            <div className="grid grid-cols-3 gap-4">
               <select
                 value={formCategory}
                 onChange={(e) => setFormCategory(e.target.value as NoteCategory)}
@@ -238,6 +245,12 @@ export default function VaultPage() {
                 <option value="spiritual">Spiritual</option>
                 <option value="other">Other</option>
               </select>
+
+              <AreaSelector
+                value={formAreaId}
+                onChange={setFormAreaId}
+                className="px-3 py-2"
+              />
 
               <input
                 type="text"

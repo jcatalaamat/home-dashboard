@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { ProjectType, ProjectStatus, Priority } from '@/types';
 import { PlusIcon } from '@/icons';
+import AreaSelector from '@/components/ui/AreaSelector';
 
 interface AddProjectFormProps {
   onAdd?: () => void;
@@ -16,6 +17,7 @@ export default function AddProjectForm({ onAdd }: AddProjectFormProps) {
   const [type, setType] = useState<ProjectType>('personal');
   const [status, setStatus] = useState<ProjectStatus>('idea');
   const [priority, setPriority] = useState<Priority>(3);
+  const [areaId, setAreaId] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +33,7 @@ export default function AddProjectForm({ onAdd }: AddProjectFormProps) {
       notes: '',
       links: [],
       goalId: null,
-      areaId: null,
+      areaId,
     });
 
     setName('');
@@ -62,7 +64,7 @@ export default function AddProjectForm({ onAdd }: AddProjectFormProps) {
         className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-transparent dark:text-white focus:outline-none focus:border-brand-500"
       />
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <select
           value={type}
           onChange={(e) => setType(e.target.value as ProjectType)}
@@ -87,7 +89,9 @@ export default function AddProjectForm({ onAdd }: AddProjectFormProps) {
           <option value="active">Active</option>
           <option value="paused">Paused</option>
         </select>
+      </div>
 
+      <div className="grid grid-cols-2 gap-2">
         <select
           value={priority}
           onChange={(e) => setPriority(Number(e.target.value) as Priority)}
@@ -99,6 +103,12 @@ export default function AddProjectForm({ onAdd }: AddProjectFormProps) {
           <option value={4}>P4 - Low</option>
           <option value={5}>P5 - Someday</option>
         </select>
+
+        <AreaSelector
+          value={areaId}
+          onChange={setAreaId}
+          className="text-sm px-2 py-1.5"
+        />
       </div>
 
       <div className="flex justify-end gap-2">

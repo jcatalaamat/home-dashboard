@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { RoutineType, RoutineItem } from '@/types';
+import AreaSelector from '@/components/ui/AreaSelector';
+import AreaBadge from '@/components/ui/AreaBadge';
 
 type TabType = 'morning' | 'evening' | 'weekly' | 'monthly';
 
@@ -18,6 +20,7 @@ export default function RoutinesPage() {
   const [activeTab, setActiveTab] = useState<TabType>('morning');
   const [newItemText, setNewItemText] = useState('');
   const [editingRoutineId, setEditingRoutineId] = useState<string | null>(null);
+  const [newRoutineAreaId, setNewRoutineAreaId] = useState<string | null>(null);
 
   const today = new Date().toISOString().split('T')[0];
   const todayLogs = getHabitLogsForDate(today);
@@ -80,7 +83,7 @@ export default function RoutinesPage() {
         name: `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Routine`,
         type: activeTab,
         items: [newItem],
-        areaId: null,
+        areaId: newRoutineAreaId,
       });
     }
     setNewItemText('');
@@ -205,9 +208,14 @@ export default function RoutinesPage() {
 
       {/* Routine Items */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          {tabs.find((t) => t.id === activeTab)?.emoji} {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Routine
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            {tabs.find((t) => t.id === activeTab)?.emoji} {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Routine
+          </h2>
+          {currentRoutine && currentRoutine.areaId && (
+            <AreaBadge areaId={currentRoutine.areaId} size="md" />
+          )}
+        </div>
 
         {/* Routine Items List */}
         {currentRoutine && currentRoutine.items.length > 0 ? (
@@ -331,6 +339,14 @@ export default function RoutinesPage() {
             placeholder="Add a new item to this routine..."
             className="flex-1 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-brand-500"
           />
+          {!currentRoutine && (
+            <AreaSelector
+              value={newRoutineAreaId}
+              onChange={setNewRoutineAreaId}
+              className="text-sm px-2 py-2"
+              noneLabel="No area"
+            />
+          )}
           <button
             onClick={handleAddItem}
             className="px-4 py-2 bg-brand-500 text-white text-sm font-medium rounded-lg hover:bg-brand-600 transition-colors"

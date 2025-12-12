@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { TaskArea, TaskPriority, TaskCategory } from '@/types';
 import { PlusIcon } from '@/icons';
+import AreaSelector from '@/components/ui/AreaSelector';
 
 interface AddTaskFormProps {
   defaultProjectId?: string | null;
@@ -19,6 +20,7 @@ export default function AddTaskForm({ defaultProjectId = null, defaultScheduledF
   const [area, setArea] = useState<TaskArea>('work');
   const [priority, setPriority] = useState<TaskPriority>('normal');
   const [category, setCategory] = useState<TaskCategory>('cashflow');
+  const [areaId, setAreaId] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ export default function AddTaskForm({ defaultProjectId = null, defaultScheduledF
       title: title.trim(),
       projectId,
       goalId: null,
-      areaId: null,
+      areaId,
       area,
       category,
       status: 'todo',
@@ -112,6 +114,13 @@ export default function AddTaskForm({ defaultProjectId = null, defaultScheduledF
           <option value="mini-projects">P4: Mini-projects</option>
           <option value="personal">P5: Personal</option>
         </select>
+
+        <AreaSelector
+          value={areaId}
+          onChange={setAreaId}
+          className="text-xs px-2 py-1"
+          noneLabel="No life area"
+        />
       </div>
 
       <div className="flex justify-end gap-2">
