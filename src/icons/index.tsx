@@ -51,6 +51,19 @@ import HorizontaLDots from "./horizontal-dots.svg";
 import ChatIcon from "./chat.svg";
 import MoreDotIcon from "./more-dot.svg";
 import BellIcon from "./bell.svg";
+import HomeIcon from "./home.svg";
+import CheckSquareIcon from "./check-square.svg";
+import FolderKanbanIcon from "./folder-kanban.svg";
+import SunIcon from "./sun.svg";
+import DollarIcon from "./dollar.svg";
+import KanbanIcon from "./kanban.svg";
+import PenToolIcon from "./pen-tool.svg";
+import UsersIcon from "./users.svg";
+import RefreshIcon from "./refresh.svg";
+import VaultIcon from "./vault.svg";
+import ExpandIcon from "./expand.svg";
+import TargetIcon from "./target.svg";
+import CalendarWeekIcon from "./calendar-week.svg";
 
 export {
   DownloadIcon,
@@ -106,4 +119,17 @@ export {
   HorizontaLDots,
   ChevronUpIcon,
   ChatIcon,
+  HomeIcon,
+  CheckSquareIcon,
+  FolderKanbanIcon,
+  SunIcon,
+  DollarIcon,
+  KanbanIcon,
+  PenToolIcon,
+  UsersIcon,
+  RefreshIcon,
+  VaultIcon,
+  ExpandIcon,
+  TargetIcon,
+  CalendarWeekIcon,
 };
